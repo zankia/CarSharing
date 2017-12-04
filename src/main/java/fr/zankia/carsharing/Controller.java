@@ -1,10 +1,12 @@
 package fr.zankia.carsharing;
 
 import fr.zankia.carsharing.process.Algorithm;
+import fr.zankia.carsharing.model.Backup;
 
 public class Controller {
     private static Controller instance = null;
     private Algorithm algorithm;
+    private Backup backup;
 
 
     private Controller() {
@@ -33,4 +35,8 @@ public class Controller {
         return this.algorithm.getName();
     }
 
+
+    public void setBackup(Backup backup) {
+        this.backup = backup;
+    }
 }
