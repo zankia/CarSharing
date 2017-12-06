@@ -28,3 +28,9 @@ gradle-app.setting
 .gradletasknamecache
 gradle/wrapper/graddle-wrapper.proprties
 /build/
+
+# Eclipse
+/bin/
+.classpath
+.project
+.idea
