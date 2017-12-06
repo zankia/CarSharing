@@ -1,4 +1,5 @@
-package main.java.fr.zankia.carsharing.data;
+package fr.zankia.carsharing.data;
+
 
 /*
  * Destination is the point on a map where a passenger want to go
@@ -8,13 +9,18 @@ package main.java.fr.zankia.carsharing.data;
  */
 public class Destination extends CrossingPoint {
 
+	
 	/*
-	 * Constructor of a destination
+	 * Constructor of a destination.
 	 * @param x a float that will be coordX of the destination
 	 * @param y a float that will be coordY of the destination
 	 */
 	public Destination(float x, float y) {
-		//call to the constructor of the super class (CrossingPoint)
+		
+		//call to the constructor of the super class (CrossingPoint).
 		super(x, y);
+		
 	}
+	
+	
 }
