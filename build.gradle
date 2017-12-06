@@ -1,0 +1,22 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+version = '0.1'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'CarSharing',
+	           'Implementation-Verion': version
+    }
+}
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:23.0'
+    testCompile 'junit:junit:4.12'
+}
+
+mainClassName = 'fr.zankia.carsharing.App'
+
