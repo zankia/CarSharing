@@ -1,6 +1,6 @@
 package fr.zankia.carsharing.model;
 
-import fr.zankia.carsharing.data.Map;
+import fr.zankia.carsharing.data.CityState;
 
 /**
  * The interface for saving data.
@@ -8,10 +8,10 @@ import fr.zankia.carsharing.data.Map;
  */
 public interface Backup {
     /**
-     * Returns a <code>Map</code> filled with a layout.
-     * @return a <code>Map</code> filled with a layout
+     * Returns a <code>CityState</code> filled with a layout.
+     * @return a <code>CityState</code> filled with a layout
      */
-    public Map load();
+    public CityState load();
     /**
      * Saves the current layout
      */

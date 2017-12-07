@@ -24,10 +24,11 @@ hs_err_pid*
 # Gradle
 .gradle
 gradle-app.setting
-!graddle-wrapper.jar
+!gradle-wrapper.jar
 .gradletasknamecache
-gradle/wrapper/graddle-wrapper.proprties
+gradle/wrapper/gradle-wrapper.properties
 /build/
+.settings
 
 # Eclipse
 /bin/
