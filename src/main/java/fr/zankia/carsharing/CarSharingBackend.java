@@ -2,7 +2,7 @@ package fr.zankia.carsharing;
 
 import fr.zankia.carsharing.process.Deterministic;
 
-public class App {
+public class CarSharingBackend {
 
     public static void main(String[] args) {
         Controller controller = Controller.getInstance();

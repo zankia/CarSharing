@@ -1,102 +1,112 @@
 package fr.zankia.carsharing.data;
 
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.awt.geom.Point2D;
 
 
-/*
- * This class represents the vehicles used by a Map.
+/**
+ * The Vehicle moves across the city transporting Passengers
  * @since 0.1
  */
 public class Vehicle {
+    /**
+     * Maximum Passengers amount.
+     **/
+    private int capacity;
+    /**
+     * Location of the vehicle in the city.
+     */
+    private Point2D.Float location;
+    /**
+     * Current route of the Vehicle. In this Collection, there are the points
+     * where the Vehicle has to go. It is ordered for having the shortest route.
+     */
+    private LinkedList<Point2D.Float> route;
+    /**
+     * The list of the Passenger in the Vehicle
+     */
+    private ArrayList<Passenger> passengers;
 
-	
-	// Number of passengers available in the car.
-	private int capacity;
-	
-	
-	// Initial position of the vehicle on the Map.
-	private CrossingPoint startPoint;
-	
-	
-	// Orderly collection of the CrossingPoint by which the car must pass
-	private LinkedList<CrossingPoint> route;
 
-	
-	/*
-	 * Constructor of a Vehicle.
-	 * @param capacity a integer will represent the capacity of the vehicle
-	 * @param x a float that will be coordX to the start point
-	 * @param y a float that will be coordY to the start point
-	 */
-	public Vehicle(int capacity, float x, float y) {
-		this.capacity = capacity ;
-		this.startPoint = new CrossingPoint(x, y);
-		this.route = new LinkedList<CrossingPoint>();
-	}
+    /**
+     * Constructs a Vehicle at the given Point.
+     * @param capacity the capacity
+     * @param location the initial location
+     */
+    public Vehicle(int capacity, Point2D.Float location) {
+        this.capacity = capacity ;
+        this.location = location;
+        this.route = new LinkedList<Point2D.Float>();
+        this.passengers = new ArrayList<Passenger>();
+    }
 
-	
-	/*
-	 * Getter of the capacity.
-	 * @return a integer that represents capacity of the vehicle
-	 */
-	public int getCapacity() {
-		return capacity;
-	}
 
-	
-	/*
-	 * Setter of the capacity.
-	 * @param capacity a integer that will be the capacity of the vehicle
-	 */
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
-	
-	
-	/*
-	 * Getter of the route. 
-	 * @return a LinkedList that is the route of the vehicle
-	 */
-	public LinkedList<CrossingPoint> getRoute() {
-		return route;
-	}
+    /**
+     * Getter of the capacity.
+     * @return the capacity of the vehicle
+     */
+    public int getCapacity() {
+        return capacity;
+    }
 
-	
-	/*
-	 * Add a CrossingPoint to the route.
-	 * @param point the CrossingPoint to add
-	 */
-	public void addCrossingPoint(CrossingPoint point) {
-		route.add(point);
-	}
 
-	
-	/*
-	 * Remove a CrossingPoint of the route.
-	 * @param point the CrossingPoint to remove
-	 */
-	public void removeCrossingPoint(CrossingPoint point) {
-		route.remove(point);
-	}
+    /**
+     * Setter of the capacity.
+     * @param capacity the capacity to set
+     */
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 
-	
-	/*
-	 * Getter of the start Point.
-	 * @return the startPoint of the vehicle
-	 */
-	public CrossingPoint getStartPoint() {
-		return startPoint;
-	}
 
-	
-	/*
-	 * Setter of the start point.
-	 * @param startPoint a CrossingPoint will be the start point of the vehicle
-	 */
-	public void setStartPoint(CrossingPoint startPoint) {
-		this.startPoint = startPoint;
-	}
+    /**
+     * Getter of the location.
+     * @return the current location of the Vehicle
+     */
+    public Point2D.Float getLocation() {
+        return location;
+    }
 
-	
+
+    /**
+     * Setter of the location.
+     * @param location the location to set
+     */
+    public void setLocation(Point2D.Float location) {
+        this.location = location;
+    }
+
+
+    /**
+     * Adds a passenger to the route
+     * @param passenger the passenger to add
+     */
+    public void addRoute(Passenger passenger) {
+        route.add(passenger.getLocation());
+    }
+
+
+    /**
+     * Adds a Passenger
+     * @param passenger the Passenger to add
+     * @return wether the Passenger has been added or not
+     */
+    public boolean addPassenger(Passenger passenger) {
+        if(passengers.size() > capacity) {
+            return false;
+        }
+        passengers.add(passenger);
+        return true;
+    }
+
+
+    /**
+     * Removes a Passenger
+     * @param passenger the Passenger to remove
+     */
+    public void removePassenger(Passenger passenger) {
+        passengers.remove(passenger);
+    }
 }

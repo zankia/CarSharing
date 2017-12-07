@@ -1,6 +1,6 @@
 package fr.zankia.carsharing.process;
 
-import fr.zankia.carsharing.data.Map;
+import fr.zankia.carsharing.data.CityState;
 
 /**
  * Genetic algorithm. This algorithm take the most efficient solution within random possibilities.
@@ -8,14 +8,17 @@ import fr.zankia.carsharing.data.Map;
  * @since 0.1
  */
 public class Genetic implements Algorithm {
+    private static String name = "Genetic";
+
+
     @Override
     public String getName() {
-        return "Genetic";
+        return name;
     }
 
 
     @Override
-    public Map step() {
+    public CityState step() {
         //TODO
         return null;
     }
