@@ -1,6 +1,9 @@
 package fr.zankia.carsharing;
 
 import fr.zankia.carsharing.process.Algorithm;
+
+import com.sun.istack.internal.logging.Logger;
+
 import fr.zankia.carsharing.model.Backup;
 
 /**
@@ -8,6 +11,10 @@ import fr.zankia.carsharing.model.Backup;
  * @since 0.1
  */
 public class Controller {
+    /**
+     * The logger of this class
+     */
+    private static final Logger log = Logger.getLogger(Controller.class);
     /**
      * The single instance of this class.
      */
@@ -41,6 +48,7 @@ public class Controller {
             synchronized(Controller.class) {
                 if (instance == null) {
                     instance = new Controller();
+                    log.info("Created a new instance");
                 }
             }
         }
@@ -54,6 +62,7 @@ public class Controller {
      */
     public void setAlgorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
+        log.info(algorithm.toString() + " selected");
     }
 
 
@@ -62,7 +71,7 @@ public class Controller {
      * @return the name of the selected <code>Algorithm</code>
      */
     public String getAlgorithmName() {
-        return this.algorithm.getName();
+        return this.algorithm.toString();
     }
 
 
@@ -72,5 +81,6 @@ public class Controller {
      */
     public void setBackup(Backup backup) {
         this.backup = backup;
+        log.info(backup.toString() + " selected");
     }
 }

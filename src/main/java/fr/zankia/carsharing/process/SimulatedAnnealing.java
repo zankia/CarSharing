@@ -9,9 +9,11 @@ import fr.zankia.carsharing.data.CityState;
  */
 public class SimulatedAnnealing implements Algorithm {
     private static String name = "Simulated annealing";
+
+
     @Override
-    public String getName() {
-        return name;
+    public String toString() {
+        return name + " algorithm";
     }
 
 

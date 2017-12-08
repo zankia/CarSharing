@@ -25,17 +25,17 @@ public class ControllerTest {
         Algorithm algorithm = new Deterministic();
         Controller instance = Controller.getInstance();
         instance.setAlgorithm(algorithm);
-        assertEquals(algorithm.getName(), instance.getAlgorithmName(),
+        assertEquals(algorithm.toString(), instance.getAlgorithmName(),
                 "setAlgorithm should set Deterministic Algorithm");
 
         algorithm = new SimulatedAnnealing();
         instance.setAlgorithm(algorithm);
-        assertEquals(algorithm.getName(), instance.getAlgorithmName(),
+        assertEquals(algorithm.toString(), instance.getAlgorithmName(),
                 "setAlgorithm should set Simulated annealing Algorithm");
 
         algorithm = new Genetic();
         instance.setAlgorithm(algorithm);
-        assertEquals(algorithm.getName(), instance.getAlgorithmName(),
+        assertEquals(algorithm.toString(), instance.getAlgorithmName(),
                 "setAlgorithm should set Genetic Algorithm");
     }
 }

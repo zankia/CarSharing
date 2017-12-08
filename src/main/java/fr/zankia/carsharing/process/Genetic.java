@@ -12,8 +12,8 @@ public class Genetic implements Algorithm {
 
 
     @Override
-    public String getName() {
-        return name;
+    public String toString() {
+        return name + " algorithm";
     }
 
 
