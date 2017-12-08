@@ -8,11 +8,6 @@ import fr.zankia.carsharing.data.CityState;
  */
 public interface Algorithm {
     /**
-     * Returns the name of the <code>Algorithm</code>.
-     * @return the name of the <code>Algorithm</code>
-     */
-    public String getName();
-    /**
      * Executes the algorithm and gives the new <code>CityState</code> after one step.
      * During a step, elements can only by only 1 unit.
      * @return a <code>CityState</code> filled with a layout

@@ -13,8 +13,8 @@ public class Deterministic implements Algorithm {
 
 
     @Override
-    public String getName() {
-        return name;
+    public String toString() {
+        return name + " algorithm";
     }
 
 

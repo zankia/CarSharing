@@ -15,8 +15,9 @@ repositories {
 
 dependencies {
     compile 'com.google.guava:guava:23.0'
-    testCompile 'junit:junit:4.12'
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.2")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.2")
 }
 
-mainClassName = 'fr.zankia.carsharing.App'
+mainClassName = 'fr.zankia.carsharing.CarSharingBackend'
 
