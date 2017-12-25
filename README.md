@@ -8,9 +8,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* Java Development Kit (JDK), version 1.7 or better
+* Java Development Kit (JDK), version 1.8 or better
 
-Note: any gradle command can be executed with the given `gradlew` file.
+Note: any gradle command can be executed with the given `gradlew` wrapper.
 
 ### Installing
 
