@@ -1,6 +1,6 @@
 package fr.zankia.carsharing.process;
 
-import fr.zankia.carsharing.data.CityState;
+import fr.zankia.carsharing.model.CityState;
 
 /**
  * Genetic algorithm. This algorithm take the most efficient solution within random possibilities.

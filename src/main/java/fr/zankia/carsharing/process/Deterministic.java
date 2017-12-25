@@ -1,10 +1,10 @@
 package fr.zankia.carsharing.process;
 
-import fr.zankia.carsharing.data.CityState;
+import fr.zankia.carsharing.model.CityState;
 
 /**
  * Deterministic algorithm. This algorithm explores all the solution and give the most efficient.
- * It could take a lot of time if there are a lot of data to process.
+ * It could take a lot of time if there are a lot of model to process.
  * @see <a href="https://en.wikipedia.org/wiki/Deterministic_algorithm">Deterministic algorithm</a>
  * @since 0.1
  */

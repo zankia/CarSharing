@@ -1,6 +1,6 @@
 package fr.zankia.carsharing.process;
 
-import fr.zankia.carsharing.data.CityState;
+import fr.zankia.carsharing.model.CityState;
 
 /**
  * The interface for solving the problem.
@@ -11,7 +11,6 @@ public interface Algorithm {
      * Executes the algorithm and gives the new <code>CityState</code> after one step.
      * During a step, elements can only by only 1 unit.
      * @return a <code>CityState</code> filled with a layout
-     * @see fr.zankia.carsharing.Vehicle
      */
     public CityState step();
     /**

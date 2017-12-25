@@ -1,9 +1,9 @@
-package fr.zankia.carsharing.model;
+package fr.zankia.carsharing.database;
 
-import fr.zankia.carsharing.data.CityState;
+import fr.zankia.carsharing.model.CityState;
 
 /**
- * This class saves data into an <code>xml</code> file
+ * This class saves model into an <code>xml</code> file
  * @since 0.1
  */
 public class XMLBackup implements Backup {

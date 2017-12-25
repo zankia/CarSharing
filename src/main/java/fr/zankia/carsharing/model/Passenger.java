@@ -1,13 +1,12 @@
-package fr.zankia.carsharing.data;
+package fr.zankia.carsharing.model;
 
 import java.awt.geom.Point2D;
-
 
 /**
  * A passenger is the customer, the person want be take by a car.
  * @since 0.1
  */
-public class Passenger {
+public class Passenger implements IPassenger {
     /**
      * The current location of the Passenger
      **/
@@ -18,37 +17,25 @@ public class Passenger {
     private Point2D.Float destination;
 
 
-    /**
-     * Getter of the location.
-     * @return the location
-     */
+    @Override
     public Point2D.Float getLocation() {
         return location;
     }
 
 
-    /**
-     * Setter of the location.
-     * @param location the location to set
-     */
+    @Override
     public void setLocation(Point2D.Float location) {
         this.location = location;
     }
 
 
-    /**
-     * Getter of the destination.
-     * @return the destination
-     */
+    @Override
     public Point2D.Float getDestination() {
         return destination;
     }
 
 
-    /**
-     * Setter of the destination.
-     * @param destination the destination to set
-     */
+    @Override
     public void setDestination(Point2D.Float destination) {
         this.destination = destination;
     }

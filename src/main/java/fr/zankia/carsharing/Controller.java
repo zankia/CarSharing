@@ -1,10 +1,9 @@
 package fr.zankia.carsharing;
 
+import fr.zankia.carsharing.database.Backup;
 import fr.zankia.carsharing.process.Algorithm;
 
 import java.util.logging.Logger;
-
-import fr.zankia.carsharing.model.Backup;
 
 /**
  * The main point of the application. It is unique for the whole application.
@@ -48,7 +47,7 @@ public class Controller {
             synchronized(Controller.class) {
                 if (instance == null) {
                     instance = new Controller();
-                    log.info("Created a new instance");
+                    log.finest("Created a new instance");
                 }
             }
         }
@@ -62,7 +61,7 @@ public class Controller {
      */
     public void setAlgorithm(Algorithm algorithm) {
         this.algorithm = algorithm;
-        log.info(algorithm.toString() + " selected");
+        log.fine(algorithm.toString() + " selected");
     }
 
 
@@ -81,6 +80,6 @@ public class Controller {
      */
     public void setBackup(Backup backup) {
         this.backup = backup;
-        log.info(backup.toString() + " selected");
+        log.fine(backup.toString() + " selected");
     }
 }

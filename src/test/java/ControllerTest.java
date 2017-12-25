@@ -1,14 +1,11 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
-
-import org.junit.jupiter.api.Test;
-
 import fr.zankia.carsharing.Controller;
 import fr.zankia.carsharing.process.Algorithm;
 import fr.zankia.carsharing.process.Deterministic;
 import fr.zankia.carsharing.process.Genetic;
 import fr.zankia.carsharing.process.SimulatedAnnealing;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ControllerTest {
     @Test
