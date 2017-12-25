@@ -11,4 +11,4 @@ sont très simples.
 
 ## Tests
 Nous avons décidé d'effectuer des tests unitaires avec
-[junit](http://junit.org/junit4/).
+[junit](http://junit.org/).
