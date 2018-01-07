@@ -18,7 +18,7 @@ public class CityState implements ICityState {
     /**
      * Collection of the points to travel
      */
-    private List<Passenger> waypoints;
+    private List<IPassenger> waypoints;
 
 
     /**
@@ -31,7 +31,7 @@ public class CityState implements ICityState {
 
 
     @Override
-    public void addPoint(Passenger passenger) {
+    public void addPoint(IPassenger passenger) {
         waypoints.add(passenger);
     }
 
@@ -43,7 +43,7 @@ public class CityState implements ICityState {
 
 
     @Override
-    public void removePoint(Passenger passenger) {
+    public void removePoint(IPassenger passenger) {
         waypoints.remove(passenger);
     }
 
@@ -55,9 +55,9 @@ public class CityState implements ICityState {
 
 
     @Override
-    public List<Point2D.Float> getLocations() {
-        List<Point2D.Float> list = new ArrayList<>();
-        for(Passenger p : waypoints) {
+    public List<Point2D> getLocations() {
+        List<Point2D> list = new ArrayList<>();
+        for(IPassenger p : waypoints) {
             list.add(p.getLocation());
         }
         return list;
@@ -65,11 +65,36 @@ public class CityState implements ICityState {
 
 
     @Override
-    public List<Point2D.Float> getDestinations() {
-        List<Point2D.Float> list = new ArrayList<>();
-        for(Passenger p : waypoints) {
+    public List<Point2D> getDestinations() {
+        List<Point2D> list = new ArrayList<>();
+        for(IPassenger p : waypoints) {
             list.add(p.getDestination());
         }
         return list;
     }
+
+
+    @Override
+    public List<IVehicle> getVehicles() {
+        return vehicles;
+    }
+
+
+    @Override
+    public List<IPassenger> getWaypoints() {
+        return waypoints;
+    }
+
+
+    @Override
+    public void clear() {
+        vehicles.clear();
+        waypoints.clear();
+    }
+
+    @Override
+    public void setVehicles(List<IVehicle> vehicles) {
+        this.vehicles = vehicles;
+    }
+
 }

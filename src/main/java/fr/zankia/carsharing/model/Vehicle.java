@@ -3,6 +3,7 @@ package fr.zankia.carsharing.model;
 
 import java.awt.geom.Point2D;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
@@ -19,12 +20,12 @@ public class Vehicle implements IVehicle {
     /**
      * Location of the vehicle in the city.
      */
-    private Point2D.Float location;
+    private Point2D location;
     /**
      * Current route of the Vehicle. In this Collection, there are the points
      * where the Vehicle has to go. It is ordered for having the shortest route.
      */
-    private LinkedList<Point2D.Float> route;
+    private LinkedList<Point2D> route;
     /**
      * The list of the Passenger in the Vehicle
      */
@@ -36,7 +37,7 @@ public class Vehicle implements IVehicle {
      * @param capacity the capacity
      * @param location the initial location
      */
-    public Vehicle(int capacity, Point2D.Float location) {
+    public Vehicle(int capacity, Point2D location) {
         this.capacity = capacity ;
         this.location = location;
         this.route = new LinkedList<>();
@@ -57,13 +58,13 @@ public class Vehicle implements IVehicle {
 
 
     @Override
-    public Point2D.Float getLocation() {
+    public Point2D getLocation() {
         return location;
     }
 
 
     @Override
-    public void setLocation(Point2D.Float location) {
+    public void setLocation(Point2D location) {
         this.location = location;
         route.remove(location);
     }
@@ -71,31 +72,39 @@ public class Vehicle implements IVehicle {
 
     @Override
     public void addRoute(IPassenger passenger) {
-        addLocation(passenger.getLocation());
-        addLocation(passenger.getDestination());
+        int i = addLocation(0, passenger.getLocation());
+        addLocation(i, passenger.getDestination());
     }
 
 
     /**
      * Adds a location to the route.
+     * @param from the index to begin search
      * @param locationToAdd the location to add
      */
-    private void addLocation(Point2D.Float locationToAdd) {
+    private int addLocation(int from, Point2D locationToAdd) {
         int i = -1;
-        double minDistance = location.distance(locationToAdd);
-        for (Point2D.Float point : route) {
-            double distance = locationToAdd.distance(point);
+        double minDistance;
+        if (from == 0) {
+            minDistance = location.distance(locationToAdd);
+        } else {
+            minDistance = Double.MAX_VALUE;
+        }
+        for (int j = from; j < route.size(); ++j) {
+            double distance = locationToAdd.distance(route.get(j));
             if (minDistance > distance) {
                 minDistance = distance;
-                i = route.indexOf(point);
+                i = j;
             }
         }
-        route.add(i + 1, locationToAdd);
+        ++i;
+        route.add(i, locationToAdd);
+        return i;
     }
 
 
     @Override
-    public Point2D.Float getNextWaypoint() {
+    public Point2D getNextWaypoint() {
         return route.peekFirst();
     }
 
@@ -129,11 +138,24 @@ public class Vehicle implements IVehicle {
 
     @Override
     public double getCost() {
+        if (getNextWaypoint() == null) {
+            return 0;
+        }
         double cost = location.distance(getNextWaypoint());
         for (int i = 0; i < route.size() - 1; ++i) {
             cost += route.get(i).distance(route.get(i+1));
         }
         return cost;
+    }
+
+    @Override
+    public ArrayBlockingQueue<IPassenger> getPassengers() {
+        return passengers;
+    }
+
+    @Override
+    public List<Point2D> getRoute() {
+        return this.route;
     }
 
 

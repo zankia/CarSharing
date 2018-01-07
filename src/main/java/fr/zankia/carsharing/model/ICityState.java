@@ -8,7 +8,7 @@ public interface ICityState {
      * Adds a passenger.
      * @param passenger a passenger to add
      */
-    void addPoint(Passenger passenger);
+    void addPoint(IPassenger passenger);
 
     /**
      * Adds a vehicle.
@@ -20,7 +20,7 @@ public interface ICityState {
      * Removes a passenger.
      * @param passenger the passenger to remove
      */
-    void removePoint(Passenger passenger);
+    void removePoint(IPassenger passenger);
 
     /**
      * Removes a vehicle.
@@ -32,11 +32,19 @@ public interface ICityState {
      * Returns all the passenger locations.
      * @return the passenger locations
      */
-    List<Point2D.Float> getLocations();
+    List<Point2D> getLocations();
 
     /**
      * Returns all the passenger destinations.
      * @return the passenger destinations
      */
-    List<Point2D.Float> getDestinations();
+    List<Point2D> getDestinations();
+
+    List<IVehicle> getVehicles();
+
+    List<IPassenger> getWaypoints();
+
+    void clear();
+
+    void setVehicles(List<IVehicle> vehicles);
 }

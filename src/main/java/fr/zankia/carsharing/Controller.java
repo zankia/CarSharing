@@ -1,6 +1,8 @@
 package fr.zankia.carsharing;
 
 import fr.zankia.carsharing.database.Backup;
+import fr.zankia.carsharing.model.CityState;
+import fr.zankia.carsharing.model.ICityState;
 import fr.zankia.carsharing.process.Algorithm;
 
 import java.util.logging.Logger;
@@ -26,6 +28,7 @@ public class Controller {
      * The selected <code>Backup</code> method.
      */
     private Backup backup;
+    private ICityState cityState;
 
 
     /**
@@ -34,6 +37,7 @@ public class Controller {
     private Controller() {
         this.algorithm = null;
         this.backup = null;
+        this.cityState = new CityState();
     };
 
 
@@ -81,5 +85,18 @@ public class Controller {
     public void setBackup(Backup backup) {
         this.backup = backup;
         log.fine(backup.toString() + " selected");
+    }
+
+    public ICityState getCityState() {
+        return cityState;
+    }
+
+    public ICityState getSolution() {
+        algorithm.solve();
+        return cityState;
+    }
+
+    public void resetCity() {
+        cityState.clear();
     }
 }

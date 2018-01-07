@@ -1,6 +1,8 @@
 package fr.zankia.carsharing.model;
 
 import java.awt.geom.Point2D;
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public interface IVehicle {
     /**
@@ -19,13 +21,13 @@ public interface IVehicle {
      * Getter of the location.
      * @return the current location of the Vehicle
      */
-    Point2D.Float getLocation();
+    Point2D getLocation();
 
     /**
      * Setter of the location.
      * @param location the location to set
      */
-    void setLocation(Point2D.Float location);
+    void setLocation(Point2D location);
 
     /**
      * Adds a passenger to the route.
@@ -37,7 +39,7 @@ public interface IVehicle {
      * Returns the next location in the route.
      * @return the next location in the route
      */
-    Point2D.Float getNextWaypoint();
+    Point2D getNextWaypoint();
 
     /**
      * Adds a Passenger in the same location.
@@ -65,4 +67,8 @@ public interface IVehicle {
      * @return the total cost
      */
     double getCost();
+
+    ArrayBlockingQueue<IPassenger> getPassengers();
+
+    List<Point2D> getRoute();
 }

@@ -10,33 +10,33 @@ public class Passenger implements IPassenger {
     /**
      * The current location of the Passenger
      **/
-    private Point2D.Float location;
+    private Point2D location;
     /**
      * The destination of the Passenger.
      */
-    private Point2D.Float destination;
+    private Point2D destination;
 
 
     @Override
-    public Point2D.Float getLocation() {
+    public Point2D getLocation() {
         return location;
     }
 
 
     @Override
-    public void setLocation(Point2D.Float location) {
+    public void setLocation(Point2D location) {
         this.location = location;
     }
 
 
     @Override
-    public Point2D.Float getDestination() {
+    public Point2D getDestination() {
         return destination;
     }
 
 
     @Override
-    public void setDestination(Point2D.Float destination) {
+    public void setDestination(Point2D destination) {
         this.destination = destination;
     }
 
@@ -46,7 +46,7 @@ public class Passenger implements IPassenger {
      * @param location the initial location
      * @param destination the destination
      */
-    public Passenger(Point2D.Float location, Point2D.Float destination) {
+    public Passenger(Point2D location, Point2D destination) {
         this.location = location;
         this.destination = destination;
     }
@@ -56,7 +56,7 @@ public class Passenger implements IPassenger {
      * Constructs a Passenger at the given Point.
      * @param location the initial location
      */
-    public Passenger(Point2D.Float location) {
+    public Passenger(Point2D location) {
         this.location = location;
         this.destination = null;
     }
