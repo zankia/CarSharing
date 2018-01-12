@@ -2,8 +2,10 @@ package fr.zankia.carsharing.model;
 
 
 import java.awt.geom.Point2D;
+import java.util.AbstractMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 
 
@@ -25,7 +27,7 @@ public class Vehicle implements IVehicle {
      * Current route of the Vehicle. In this Collection, there are the points
      * where the Vehicle has to go. It is ordered for having the shortest route.
      */
-    private LinkedList<Point2D> route;
+    private LinkedList<Map.Entry<Point2D, Integer>> route;
     /**
      * The list of the Passenger in the Vehicle
      */
@@ -73,39 +75,57 @@ public class Vehicle implements IVehicle {
     @Override
     public void addRoute(IPassenger passenger) {
         int i = addLocation(0, passenger.getLocation());
-        addLocation(i, passenger.getDestination());
+        addLocation(i+1, passenger.getDestination());
     }
 
 
     /**
-     * Adds a location to the route.
+     * Adds a location to the route. The result route is the shortest possible
      * @param from the index to begin search
      * @param locationToAdd the location to add
      */
     private int addLocation(int from, Point2D locationToAdd) {
         int i = -1;
+        int capacity = 0;
         double minDistance;
-        if (from == 0) {
+        boolean pickup = from == 0;
+        if (pickup) {
             minDistance = location.distance(locationToAdd);
         } else {
+            --from;
             minDistance = Double.MAX_VALUE;
         }
         for (int j = from; j < route.size(); ++j) {
-            double distance = locationToAdd.distance(route.get(j));
-            if (minDistance > distance) {
-                minDistance = distance;
-                i = j;
+            Map.Entry<Point2D, Integer> entry = route.get(j);
+            double distance = locationToAdd.distance(entry.getKey());
+            if (minDistance >= distance) {
+                if (entry.getValue() >= this.getCapacity()) {
+                    minDistance = Double.MAX_VALUE;
+                    i = route.size()-1;
+                    capacity = 0;
+                } else {
+                    minDistance = distance;
+                    i = j;
+                    capacity = entry.getValue();
+                }
             }
         }
         ++i;
-        route.add(i, locationToAdd);
+        route.add(i, new AbstractMap.SimpleEntry<>(locationToAdd, capacity));
+        for (int j = i; j < route.size(); ++j) {
+            this.route.get(j).setValue(route.get(j).getValue() + (pickup ? 1 : -1));
+        }
         return i;
     }
 
 
     @Override
     public Point2D getNextWaypoint() {
-        return route.peekFirst();
+        Map.Entry<Point2D, Integer> entry = route.peekFirst();
+        if (entry == null) {
+            return null;
+        }
+        return entry.getKey();
     }
 
 
@@ -143,7 +163,7 @@ public class Vehicle implements IVehicle {
         }
         double cost = location.distance(getNextWaypoint());
         for (int i = 0; i < route.size() - 1; ++i) {
-            cost += route.get(i).distance(route.get(i+1));
+            cost += route.get(i).getKey().distance(route.get(i+1).getKey());
         }
         return cost;
     }
@@ -155,7 +175,11 @@ public class Vehicle implements IVehicle {
 
     @Override
     public List<Point2D> getRoute() {
-        return this.route;
+        List<Point2D> list = new LinkedList<>();
+        for(Map.Entry<Point2D, Integer> entry : this.route) {
+            list.add(entry.getKey());
+        }
+        return list;
     }
 
 
