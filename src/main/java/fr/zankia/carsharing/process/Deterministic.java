@@ -46,7 +46,7 @@ public class Deterministic implements Algorithm {
         List<IPassenger> passengers = state.getWaypoints();
         List<IVehicle> bestSolution = null;
         double minimumCost = Double.MAX_VALUE;
-        //for (int j = 0; j < DoubleMath.factorial(vehicles.size()); ++j) {
+        for (int j = 0; j < DoubleMath.factorial(vehicles.size()); ++j) {
             int currentVehicle = 0;
             List<IVehicle> currentSolution = new ArrayList<>(vehicles);
             for (int i = 0; i < passengers.size(); ++i) {
@@ -67,18 +67,15 @@ public class Deterministic implements Algorithm {
                 bestSolution = currentSolution;
             }
 
-            //swap(vehicles, j, j+1);
-        //}
+            swap(vehicles, j % vehicles.size(), (j+1) % vehicles.size());
+        }
 
         state.setVehicles(bestSolution);
     }
 
     private void swap(List<IVehicle> vehicles, int i, int j) {
-        if (j == vehicles.size()) {
-            j = 0;
-        }
-            IVehicle v = vehicles.get(i);
-            vehicles.set(i, vehicles.get(j));
-            vehicles.set(j, v);
+        IVehicle v = vehicles.get(i);
+        vehicles.set(i, vehicles.get(j));
+        vehicles.set(j, v);
     }
 }

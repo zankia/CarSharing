@@ -10,13 +10,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 
-public class DeterministicTest {
+class DeterministicTest {
     private ICityState state;
     private Point2D.Float origin, destination, farAway;
     private Controller controller;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         controller = Controller.getInstance();
         controller.setAlgorithm(new Deterministic());
         state = controller.getCityState();
@@ -42,7 +42,7 @@ public class DeterministicTest {
 
 
     @Test
-    public void testSolutionOneVehicleOnePassenger() {
+    void testSolutionOneVehicleOnePassenger() {
         ICityState newCityState = setupOneVehicleForOnePassenger(1);
         List<IVehicle> newCityStateVehicles = newCityState.getVehicles();
         List<IVehicle> solutionVehicles = controller.getSolution().getVehicles();
@@ -56,7 +56,7 @@ public class DeterministicTest {
 
 
     @Test
-    public void testSolutionOneVehicleTwoPassengers() {
+    void testSolutionOneVehicleTwoPassengers() {
         IPassenger passenger1 = new Passenger(origin, destination);
         IPassenger passenger2 = new Passenger(origin, destination);
         state.addVehicle(new Vehicle(2, origin));
@@ -79,7 +79,7 @@ public class DeterministicTest {
 
 
     @Test
-    public void testSolutionTwoVehicleTwoPassengers() {
+    void testSolutionTwoVehicleTwoPassengers() {
         ICityState newCityState = setupOneVehicleForOnePassenger(2);
         List<IVehicle> newCityStateVehicles = newCityState.getVehicles();
         List<IVehicle> solutionVehicles = controller.getSolution().getVehicles();
@@ -93,7 +93,7 @@ public class DeterministicTest {
 
 
     @Test
-    public void testSolutionThreeVehicleThreePassengers() {
+    void testSolutionThreeVehicleThreePassengers() {
         ICityState newCityState = setupOneVehicleForOnePassenger(3);
         List<IVehicle> newCityStateVehicles = newCityState.getVehicles();
         List<IVehicle> solutionVehicles = controller.getSolution().getVehicles();
@@ -108,7 +108,7 @@ public class DeterministicTest {
 
     /*
     @Test
-    public void testSolutionTwoVehicleOnePassenger() {
+    void testSolutionTwoVehicleOnePassenger() {
         IPassenger passenger = new Passenger(origin, destination);
         state.addVehicle(new Vehicle(1, farAway));
         state.addVehicle(new Vehicle(1, origin));
