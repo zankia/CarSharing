@@ -9,8 +9,7 @@ public class CarSharingBackend {
 
     public static void main(String[] args) {
         log.fine("Application started");
-        Controller controller = Controller.getInstance();
-        controller.setAlgorithm(new Deterministic());
+        Controller.getInstance().display();
         log.fine("Application closed");
     }
 

@@ -4,6 +4,8 @@ import fr.zankia.carsharing.database.Backup;
 import fr.zankia.carsharing.model.CityState;
 import fr.zankia.carsharing.model.ICityState;
 import fr.zankia.carsharing.process.Algorithm;
+import fr.zankia.carsharing.view.GridView;
+import fr.zankia.carsharing.view.Window;
 
 import java.util.logging.Logger;
 
@@ -98,5 +100,9 @@ public class Controller {
 
     public void resetCity() {
         cityState.clear();
+    }
+
+    public void display() {
+        new Window(new GridView());
     }
 }

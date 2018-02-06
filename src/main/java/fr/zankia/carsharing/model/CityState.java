@@ -68,7 +68,9 @@ public class CityState implements ICityState {
     public List<Point2D> getDestinations() {
         List<Point2D> list = new ArrayList<>();
         for(IPassenger p : waypoints) {
-            list.add(p.getDestination());
+            if (p.getDestination() != null) {
+                list.add(p.getDestination());
+            }
         }
         return list;
     }
