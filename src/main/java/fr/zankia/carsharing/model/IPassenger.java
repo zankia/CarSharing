@@ -7,23 +7,27 @@ public interface IPassenger {
      * Getter of the location.
      * @return the location
      */
-    Point2D.Float getLocation();
+    Point2D getLocation();
 
     /**
      * Setter of the location.
      * @param location the location to set
      */
-    void setLocation(Point2D.Float location);
+    void setLocation(Point2D location);
 
     /**
      * Getter of the destination.
      * @return the destination
      */
-    Point2D.Float getDestination();
+    Point2D getDestination();
 
     /**
      * Setter of the destination.
      * @param destination the destination to set
      */
-    void setDestination(Point2D.Float destination);
+    void setDestination(Point2D destination);
+
+    boolean isInRoute();
+
+    void setInRoute(boolean b);
 }

@@ -2,9 +2,12 @@ package fr.zankia.carsharing.model;
 
 
 import java.awt.geom.Point2D;
+import java.util.AbstractMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
-
+import java.util.logging.Logger;
 
 
 /**
@@ -19,16 +22,19 @@ public class Vehicle implements IVehicle {
     /**
      * Location of the vehicle in the city.
      */
-    private Point2D.Float location;
+    private Point2D location;
     /**
      * Current route of the Vehicle. In this Collection, there are the points
      * where the Vehicle has to go. It is ordered for having the shortest route.
      */
-    private LinkedList<Point2D.Float> route;
+    private LinkedList<Map.Entry<Point2D, Integer>> route;
     /**
      * The list of the Passenger in the Vehicle
      */
     private ArrayBlockingQueue<IPassenger> passengers;
+
+    private Logger log;
+    private static int vehicleCounter = 0;
 
 
     /**
@@ -36,11 +42,12 @@ public class Vehicle implements IVehicle {
      * @param capacity the capacity
      * @param location the initial location
      */
-    public Vehicle(int capacity, Point2D.Float location) {
+    public Vehicle(int capacity, Point2D location) {
         this.capacity = capacity ;
         this.location = location;
         this.route = new LinkedList<>();
         this.passengers = new ArrayBlockingQueue<>(capacity);
+        log = Logger.getLogger("Vehicle " + ++vehicleCounter);
     }
 
 
@@ -57,13 +64,13 @@ public class Vehicle implements IVehicle {
 
 
     @Override
-    public Point2D.Float getLocation() {
+    public Point2D getLocation() {
         return location;
     }
 
 
     @Override
-    public void setLocation(Point2D.Float location) {
+    public void setLocation(Point2D location) {
         this.location = location;
         route.remove(location);
     }
@@ -71,32 +78,62 @@ public class Vehicle implements IVehicle {
 
     @Override
     public void addRoute(IPassenger passenger) {
-        addLocation(passenger.getLocation());
-        addLocation(passenger.getDestination());
+        int i = 0;
+        if (passenger.getLocation() != null) {
+            i = addLocation(0, passenger.getLocation());
+        }
+        addLocation(i+1, passenger.getDestination());
+        passenger.setInRoute(true);
     }
 
 
     /**
-     * Adds a location to the route.
+     * Adds a location to the route. The result route is the shortest possible
+     * @param from the index to begin search
      * @param locationToAdd the location to add
      */
-    private void addLocation(Point2D.Float locationToAdd) {
+    private int addLocation(int from, Point2D locationToAdd) {
         int i = -1;
-        double minDistance = location.distance(locationToAdd);
-        for (Point2D.Float point : route) {
-            double distance = locationToAdd.distance(point);
-            if (minDistance > distance) {
-                minDistance = distance;
-                i = route.indexOf(point);
+        int capacity = 0;
+        double minDistance;
+        boolean pickup = from == 0;
+        if (pickup) {
+            minDistance = location.distance(locationToAdd);
+        } else {
+            --from;
+            minDistance = Double.MAX_VALUE;
+        }
+        for (int j = from; j < route.size(); ++j) {
+            Map.Entry<Point2D, Integer> entry = route.get(j);
+            double distance = locationToAdd.distance(entry.getKey());
+            if (minDistance >= distance) {
+                if (entry.getValue() >= this.getCapacity()) {
+                    minDistance = Double.MAX_VALUE;
+                    i = route.size()-1;
+                    capacity = 0;
+                } else {
+                    minDistance = distance;
+                    i = j;
+                    capacity = entry.getValue();
+                }
             }
         }
-        route.add(i + 1, locationToAdd);
+        ++i;
+        route.add(i, new AbstractMap.SimpleEntry<>(locationToAdd, capacity));
+        for (int j = i; j < route.size(); ++j) {
+            this.route.get(j).setValue(route.get(j).getValue() + (pickup ? 1 : -1));
+        }
+        return i;
     }
 
 
     @Override
-    public Point2D.Float getNextWaypoint() {
-        return route.peekFirst();
+    public Point2D getNextWaypoint() {
+        Map.Entry<Point2D, Integer> entry = route.peekFirst();
+        if (entry == null) {
+            return null;
+        }
+        return entry.getKey();
     }
 
 
@@ -106,6 +143,9 @@ public class Vehicle implements IVehicle {
             return false;
         }
         passengers.add(passenger);
+        if (passenger.getLocation().equals(getNextWaypoint())) {
+            route.removeFirst();
+        }
         return true;
     }
 
@@ -116,6 +156,9 @@ public class Vehicle implements IVehicle {
             return false;
         }
         passengers.remove(passenger);
+        if (passenger.getDestination().equals(getNextWaypoint())) {
+            route.removeFirst();
+        }
         return true;
     }
 
@@ -123,17 +166,57 @@ public class Vehicle implements IVehicle {
     @Override
     public void clear() {
         passengers.clear();
-        route.clear();
+        clearRoute();
     }
 
 
     @Override
     public double getCost() {
+        if (getNextWaypoint() == null) {
+            return 0;
+        }
         double cost = location.distance(getNextWaypoint());
         for (int i = 0; i < route.size() - 1; ++i) {
-            cost += route.get(i).distance(route.get(i+1));
+            cost += route.get(i).getKey().distance(route.get(i+1).getKey());
         }
         return cost;
+    }
+
+    @Override
+    public ArrayBlockingQueue<IPassenger> getPassengers() {
+        return passengers;
+    }
+
+    @Override
+    public List<Point2D> getRoute() {
+        List<Point2D> list = new LinkedList<>();
+        for(Map.Entry<Point2D, Integer> entry : this.route) {
+            list.add(entry.getKey());
+        }
+        return list;
+    }
+
+    @Override
+    public int move() {
+        log.info(this.toString());
+        Point2D nextWaypoint = getNextWaypoint();
+        if (nextWaypoint == null) {
+            return -1;
+        }
+        if (location.equals(nextWaypoint)) {
+            return 1;
+        }
+        if (location.getX() != nextWaypoint.getX()) {
+            location.setLocation(location.getX() + (location.getX() < nextWaypoint.getX() ? 1 : -1), location.getY());
+        } else if (location.getY() != nextWaypoint.getY()) {
+            location.setLocation(location.getX(), location.getY() + (location.getY() < nextWaypoint.getY() ? 1 : -1));
+        }
+        return 0;
+    }
+
+    @Override
+    public void clearRoute() {
+        this.route.clear();
     }
 
 
@@ -157,5 +240,15 @@ public class Vehicle implements IVehicle {
             return false;
         }
         return passenger.getDestination().equals(location);
+    }
+
+    @Override
+    public String toString() {
+        String str = log.getName() + '[';
+        for (Map.Entry<Point2D, Integer> point : route) {
+            str += "(" + point.getKey().getX() + "," + point.getKey().getY() + ")";
+        }
+        str += ']';
+        return str;
     }
 }
