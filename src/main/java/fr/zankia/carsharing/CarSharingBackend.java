@@ -1,7 +1,5 @@
 package fr.zankia.carsharing;
 
-import fr.zankia.carsharing.process.Deterministic;
-
 import java.util.logging.Logger;
 
 public class CarSharingBackend {
@@ -9,8 +7,7 @@ public class CarSharingBackend {
 
     public static void main(String[] args) {
         log.fine("Application started");
-        Controller controller = Controller.getInstance();
-        controller.setAlgorithm(new Deterministic());
+        Controller.getInstance().display();
         log.fine("Application closed");
     }
 
