@@ -58,7 +58,9 @@ public class CityState implements ICityState {
     public List<Point2D> getLocations() {
         List<Point2D> list = new ArrayList<>();
         for(IPassenger p : waypoints) {
-            list.add(p.getLocation());
+            if (p.getLocation() != null) {
+                list.add(p.getLocation());
+            }
         }
         return list;
     }
@@ -97,6 +99,20 @@ public class CityState implements ICityState {
     @Override
     public void setVehicles(List<IVehicle> vehicles) {
         this.vehicles = vehicles;
+    }
+
+    @Override
+    public void moveVehicles() {
+        for (IVehicle vehicle : vehicles) {
+            if(vehicle.move() > 0) {
+                for (IPassenger passenger : waypoints) {
+                    if (vehicle.addPassenger(passenger)) {
+                        passenger.setLocation(null);
+                    }
+                }
+                vehicle.move();
+            }
+        }
     }
 
 }

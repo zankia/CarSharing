@@ -71,4 +71,8 @@ public interface IVehicle {
     ArrayBlockingQueue<IPassenger> getPassengers();
 
     List<Point2D> getRoute();
+
+    int move();
+
+    void clearRoute();
 }

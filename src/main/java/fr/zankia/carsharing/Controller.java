@@ -4,6 +4,7 @@ import fr.zankia.carsharing.database.Backup;
 import fr.zankia.carsharing.model.CityState;
 import fr.zankia.carsharing.model.ICityState;
 import fr.zankia.carsharing.process.Algorithm;
+import fr.zankia.carsharing.process.Deterministic;
 import fr.zankia.carsharing.view.GridView;
 import fr.zankia.carsharing.view.Window;
 
@@ -37,9 +38,9 @@ public class Controller {
      * The only constructor. It is <code>private</code> in order to guarantee its unicity.
      */
     private Controller() {
-        this.algorithm = null;
         this.backup = null;
         this.cityState = new CityState();
+        setAlgorithm(new Deterministic());
     };
 
 

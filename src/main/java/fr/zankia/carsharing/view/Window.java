@@ -1,5 +1,7 @@
 package fr.zankia.carsharing.view;
 
+import fr.zankia.carsharing.Controller;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -18,15 +20,19 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
     private JSpinner stepSpinner, occupantSpinner, blockSizeSpinner, addClientSpinner, intervalSpinner;
     private JSlider probabilitySlider, speedSlider, costSlider;
 
+    private Timer animation;
+
 
     public Window(IMapView mapView) {
         this.mapView = mapView;
 
-        startButton = new JButton("Start");
-        clearButton = new JButton("Clear");
-        dataButton = new JButton("Données");
-        helpButton = new JButton("Instructions");
-        quitButton = new JButton("Quitter");
+        animation = new Timer(500, this);
+
+        startButton = createButton("Start", true);
+        clearButton = createButton("Clear", true);
+        dataButton = createButton("Données", false);
+        helpButton = createButton("Instructions", false);
+        quitButton = createButton("Quitter", true);
 
         //Saving.setSavedSimuList();
         JLabel savedSimuLabel = new JLabel("Simulations enregistrées :");
@@ -36,9 +42,9 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         //    savedSimuComboBox.addItem(Saving.savedSimuNameOfSavedSimuString(s));
         savedSimuComboBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         savedSimuComboBox.addItemListener(this);
-        displaySavedSimuButton = new JButton("Afficher");
-        deleteSavedSimuButton = new JButton("Supprimer");
-        newSavedSimuButton = new JButton("Enregistrer / Modifier");
+        displaySavedSimuButton = createButton("Afficher", false);
+        deleteSavedSimuButton = createButton("Supprimer", false);
+        newSavedSimuButton = createButton("Enregistrer / Modifier", false);
         JPanel savedSimuLayout = new JPanel();
         savedSimuLayout.setLayout(new BoxLayout(savedSimuLayout,BoxLayout.PAGE_AXIS));
         savedSimuLayout.add(savedSimuLabel);
@@ -52,7 +58,7 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         savedSimuLayout.add(savedSimuButtonLayout);
 
         JLabel costLabel = new JLabel("Préférence pour la satisfaction du client :");
-        costSlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 0);
+        costSlider = createSlider(0, 100, false);
         costSlider.setMajorTickSpacing(50);
         costSlider.setMinorTickSpacing(10);
         costSlider.setPaintTicks(true);
@@ -73,11 +79,12 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         JRadioButton radioDeterministic = new JRadioButton("Déterministe");
         JRadioButton radioSimulatedAnnealing = new JRadioButton("Recuit simulé");
         JRadioButton radioGenetic = new JRadioButton("Genetique");
+        radioDeterministic.setSelected(true);
         algorithme.add(radioDeterministic);
         algorithme.add(radioSimulatedAnnealing);
         algorithme.add(radioGenetic);
         JLabel stepLabel = new JLabel("Nombre d'étapes : ");
-        stepSpinner = new JSpinner(new SpinnerNumberModel(100, 1, 999999999, 1));
+        stepSpinner = createSpinner(new SpinnerNumberModel(100, 1, 999999999, 1), false);
         JPanel stepLayout = new JPanel();
         stepLayout.setLayout(new BoxLayout(stepLayout,BoxLayout.LINE_AXIS));
         stepLayout.add(stepLabel);
@@ -87,7 +94,7 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         algorithmeLayout.add(stepLayout);
 
         JLabel speedLabel = new JLabel("Vitesse de la simulation :");
-        speedSlider = new JSlider(SwingConstants.HORIZONTAL, 1, 10, 1);
+        speedSlider = createSlider(1, 10, false);
         speedSlider.setMinorTickSpacing(1);
         speedSlider.setPaintTicks(true);
         speedSlider.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -98,7 +105,7 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         speedLayout.add(speedSlider);
 
         JLabel occupantLabel = new JLabel("Capacités des voitures :");
-        occupantSpinner = new JSpinner(new SpinnerNumberModel(5, 1, 999, 1));
+        occupantSpinner = createSpinner(new SpinnerNumberModel(5, 1, 999, 1), false);
         JPanel occupantLayout = new JPanel();
         occupantLayout.setLayout(new BoxLayout(occupantLayout,BoxLayout.PAGE_AXIS));
         occupantLayout.add(occupantLabel);
@@ -106,7 +113,7 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         occupantLayout.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel blockSizeLabel = new JLabel("Taille des blocks :");
-        blockSizeSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 25, 1));
+        blockSizeSpinner = createSpinner(new SpinnerNumberModel(0, 0, 25, 1), false);
         blockSizeSpinner.addChangeListener(this);
         JPanel blockSizeLayout = new JPanel();
         blockSizeLayout.setLayout(new BoxLayout(blockSizeLayout,BoxLayout.PAGE_AXIS));
@@ -116,11 +123,9 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
 
         addClientCheckBox = new JCheckBox("Ajouter ");
         addClientCheckBox.addActionListener(this);
-        addClientSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 999999, 1));
-        addClientSpinner.setEnabled(false);
+        addClientSpinner = createSpinner(new SpinnerNumberModel(1, 1, 999999, 1), false);
         JLabel addClientLabel = new JLabel(" clients à intervalle de ");
-        intervalSpinner = new JSpinner(new SpinnerNumberModel(5, 1, 999999, 1));
-        intervalSpinner.setEnabled(false);
+        intervalSpinner = createSpinner(new SpinnerNumberModel(5, 1, 999999, 1), false);
         JPanel addClientLayout = new JPanel();
         addClientLayout.setLayout(new BoxLayout(addClientLayout,BoxLayout.LINE_AXIS));
         addClientLayout.add(addClientCheckBox);
@@ -128,7 +133,7 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         addClientLayout.add(addClientLabel);
         addClientLayout.add(intervalSpinner);
         addClientLayout.setAlignmentX(Component.LEFT_ALIGNMENT);
-        probabilitySlider = new JSlider(SwingConstants.HORIZONTAL, 0, 100, 0);
+        probabilitySlider = createSlider(0, 100, false);
         probabilitySlider.setMajorTickSpacing(50);
         probabilitySlider.setMinorTickSpacing(10);
         probabilitySlider.setPaintTicks(true);
@@ -185,6 +190,27 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         this.setVisible(true);
     }
 
+    private JSlider createSlider(int min, int max, boolean enable) {
+        JSlider slider = new JSlider(SwingConstants.HORIZONTAL, min, max, (min + max) / 2);
+        slider.setEnabled(enable);
+        slider.addChangeListener(this);
+        return slider;
+    }
+
+    private JSpinner createSpinner(SpinnerNumberModel model, boolean enable) {
+        JSpinner spinner = new JSpinner(model);
+        spinner.setEnabled(enable);
+        spinner.addChangeListener(this);
+        return spinner;
+    }
+
+    private JButton createButton(String title, boolean enable) {
+        JButton button = new JButton(title);
+        button.setEnabled(enable);
+        button.addActionListener(this);
+        return button;
+    }
+
     @Override
     public void itemStateChanged(ItemEvent e) {
 
@@ -197,6 +223,30 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        Object src = e.getSource();
+        Controller controller = Controller.getInstance();
+        if (src == startButton) {
+            if (animation.isRunning()) {
+                startButton.setText("Start");
+                animation.stop();
+            } else {
+                startButton.setText("Stop");
+                animation.start();
+            }
+        } else if (src == clearButton) {
+            controller.resetCity();
+            mapView.update();
+        } else if (src == quitButton) {
+            System.exit(0);
+        } else if (src == animation) {
+            moveGrid();
+        }
+    }
 
+    private void moveGrid() {
+        Controller controller = Controller.getInstance();
+        controller.getSolution();
+        controller.getCityState().moveVehicles();
+        mapView.update();
     }
 }

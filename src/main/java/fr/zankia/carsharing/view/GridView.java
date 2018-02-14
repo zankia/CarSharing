@@ -51,7 +51,7 @@ public class GridView extends JPanel implements IMapView, MouseListener {
 
 
     private void drawCar(Graphics g, IVehicle car) {
-        g.setColor(Color.GREEN);
+        g.setColor(Color.RED);
         int x = getRelativeCoordinates((float) car.getLocation().getX());
         int y = getRelativeCoordinates((float) car.getLocation().getY());
         g.fillPolygon(
@@ -121,7 +121,7 @@ public class GridView extends JPanel implements IMapView, MouseListener {
 
 
     private void drawClientTarget(Graphics g, Point2D cli) {
-        g.setColor(Color.CYAN);
+        g.setColor(Color.BLUE);
         int x = getRelativeCoordinates((float) cli.getX());
         int y = getRelativeCoordinates((float) cli.getY());
         g.fillPolygon(
@@ -190,4 +190,9 @@ public class GridView extends JPanel implements IMapView, MouseListener {
 
     @Override
     public void mouseExited(MouseEvent e) { }
+
+    @Override
+    public void update() {
+        this.repaint();
+    }
 }
