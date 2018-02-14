@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
-
+import java.util.logging.Logger;
 
 
 /**
@@ -33,6 +33,9 @@ public class Vehicle implements IVehicle {
      */
     private ArrayBlockingQueue<IPassenger> passengers;
 
+    private Logger log;
+    private static int vehicleCounter = 0;
+
 
     /**
      * Constructs a Vehicle at the given Point.
@@ -44,6 +47,7 @@ public class Vehicle implements IVehicle {
         this.location = location;
         this.route = new LinkedList<>();
         this.passengers = new ArrayBlockingQueue<>(capacity);
+        log = Logger.getLogger("Vehicle " + ++vehicleCounter);
     }
 
 
@@ -79,6 +83,7 @@ public class Vehicle implements IVehicle {
             i = addLocation(0, passenger.getLocation());
         }
         addLocation(i+1, passenger.getDestination());
+        passenger.setInRoute(true);
     }
 
 
@@ -151,6 +156,9 @@ public class Vehicle implements IVehicle {
             return false;
         }
         passengers.remove(passenger);
+        if (passenger.getDestination().equals(getNextWaypoint())) {
+            route.removeFirst();
+        }
         return true;
     }
 
@@ -190,7 +198,11 @@ public class Vehicle implements IVehicle {
 
     @Override
     public int move() {
+        log.info(this.toString());
         Point2D nextWaypoint = getNextWaypoint();
+        if (nextWaypoint == null) {
+            return -1;
+        }
         if (location.equals(nextWaypoint)) {
             return 1;
         }
@@ -228,5 +240,15 @@ public class Vehicle implements IVehicle {
             return false;
         }
         return passenger.getDestination().equals(location);
+    }
+
+    @Override
+    public String toString() {
+        String str = log.getName() + '[';
+        for (Map.Entry<Point2D, Integer> point : route) {
+            str += "(" + point.getKey().getX() + "," + point.getKey().getY() + ")";
+        }
+        str += ']';
+        return str;
     }
 }

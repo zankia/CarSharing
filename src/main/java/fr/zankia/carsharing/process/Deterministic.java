@@ -2,13 +2,10 @@ package fr.zankia.carsharing.process;
 
 import com.google.common.math.DoubleMath;
 import fr.zankia.carsharing.Controller;
-import fr.zankia.carsharing.model.CityState;
-import fr.zankia.carsharing.model.ICityState;
-import fr.zankia.carsharing.model.IPassenger;
-import fr.zankia.carsharing.model.IVehicle;
+import fr.zankia.carsharing.model.*;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -45,16 +42,29 @@ public class Deterministic implements Algorithm {
         List<IVehicle> vehicles = state.getVehicles();
         List<IPassenger> passengers = state.getWaypoints();
         List<IVehicle> bestSolution = null;
+
         double minimumCost = Double.MAX_VALUE;
         for (int j = 0; j < DoubleMath.factorial(vehicles.size()); ++j) {
             int currentVehicle = 0;
             List<IVehicle> currentSolution = new ArrayList<>(vehicles);
+
+            /*
+            for (IVehicle vehicle : currentSolution) {
+                vehicle.clear();
+            }
+            for (IPassenger passenger : passengers) {
+                passenger.setInRoute(false);
+            }
+            */
+
             for (int i = 0; i < passengers.size(); ++i) {
-                try {
-                    currentSolution.get(currentVehicle).addRoute(passengers.get(i));
-                } catch (IllegalStateException e) {
-                    ++currentVehicle;
-                    --i;
+                if (!passengers.get(i).isInRoute()) {
+                    try {
+                        currentSolution.get(currentVehicle).addRoute(passengers.get(i));
+                    } catch (IllegalStateException e) {
+                        ++currentVehicle;
+                        --i;
+                    }
                 }
             }
             double totalCost = 0;
@@ -62,7 +72,6 @@ public class Deterministic implements Algorithm {
                 totalCost += vehicle.getCost();
             }
             if (minimumCost > totalCost) {
-
                 minimumCost = totalCost;
                 bestSolution = currentSolution;
             }

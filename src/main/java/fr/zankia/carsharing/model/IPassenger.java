@@ -26,4 +26,8 @@ public interface IPassenger {
      * @param destination the destination to set
      */
     void setDestination(Point2D destination);
+
+    boolean isInRoute();
+
+    void setInRoute(boolean b);
 }

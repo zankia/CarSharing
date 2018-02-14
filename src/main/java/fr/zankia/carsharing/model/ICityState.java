@@ -48,5 +48,5 @@ public interface ICityState {
 
     void setVehicles(List<IVehicle> vehicles);
 
-    void moveVehicles();
+    boolean moveVehicles();
 }

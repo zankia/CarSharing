@@ -102,17 +102,27 @@ public class CityState implements ICityState {
     }
 
     @Override
-    public void moveVehicles() {
+    public boolean moveVehicles() {
+        if (waypoints.size() == 0) {
+            return false;
+        }
         for (IVehicle vehicle : vehicles) {
             if(vehicle.move() > 0) {
-                for (IPassenger passenger : waypoints) {
-                    if (vehicle.addPassenger(passenger)) {
+                for (int i = 0; i < waypoints.size(); ++i) {
+                    IPassenger passenger = waypoints.get(i);
+                    if (passenger.getLocation() == null) {
+                        if (vehicle.removePassenger(passenger)) {
+                            waypoints.remove(i);
+                            --i;
+                        }
+                    } else if (vehicle.addPassenger(passenger)) {
                         passenger.setLocation(null);
                     }
                 }
                 vehicle.move();
             }
         }
+        return true;
     }
 
 }

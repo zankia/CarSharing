@@ -1,7 +1,5 @@
 package fr.zankia.carsharing;
 
-import fr.zankia.carsharing.process.Deterministic;
-
 import java.util.logging.Logger;
 
 public class CarSharingBackend {

@@ -15,6 +15,7 @@ public class Passenger implements IPassenger {
      * The destination of the Passenger.
      */
     private Point2D destination;
+    private boolean inRoute;
 
 
     @Override
@@ -38,6 +39,16 @@ public class Passenger implements IPassenger {
     @Override
     public void setDestination(Point2D destination) {
         this.destination = destination;
+    }
+
+    @Override
+    public boolean isInRoute() {
+        return this.inRoute;
+    }
+
+    @Override
+    public void setInRoute(boolean b) {
+        this.inRoute = b;
     }
 
 

@@ -227,8 +227,7 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         Controller controller = Controller.getInstance();
         if (src == startButton) {
             if (animation.isRunning()) {
-                startButton.setText("Start");
-                animation.stop();
+                stopAnimation();
             } else {
                 startButton.setText("Stop");
                 animation.start();
@@ -243,10 +242,17 @@ public class Window extends JFrame implements ItemListener, ChangeListener, Acti
         }
     }
 
+    private void stopAnimation() {
+        startButton.setText("Start");
+        animation.stop();
+    }
+
     private void moveGrid() {
         Controller controller = Controller.getInstance();
         controller.getSolution();
-        controller.getCityState().moveVehicles();
+        if (!controller.getCityState().moveVehicles()) {
+            stopAnimation();
+        }
         mapView.update();
     }
 }
