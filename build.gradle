@@ -22,6 +22,11 @@ jar {
                    'Implementation-Verion': version,
                    'Main-Class': mainClassName
     }
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
 }
 repositories {
     jcenter()
