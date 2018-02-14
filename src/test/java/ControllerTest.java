@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ControllerTest {
+class ControllerTest {
     @Test
-    public void testControllerIsUnique() {
+    void testControllerIsUnique() {
         assertNotNull(Controller.getInstance(),
                 "Controller should be initialized");
 
@@ -18,7 +18,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testAlgorithmSelection() {
+    void testAlgorithmSelection() {
         Algorithm algorithm = new Deterministic();
         Controller instance = Controller.getInstance();
         instance.setAlgorithm(algorithm);
