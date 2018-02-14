@@ -72,7 +72,10 @@ public class Vehicle implements IVehicle {
 
     @Override
     public void addRoute(IPassenger passenger) {
-        int i = addLocation(0, passenger.getLocation());
+        int i = 0;
+        if (passenger.getLocation() != null) {
+            i = addLocation(0, passenger.getLocation());
+        }
         addLocation(i, passenger.getDestination());
     }
 
@@ -115,6 +118,9 @@ public class Vehicle implements IVehicle {
             return false;
         }
         passengers.add(passenger);
+        if (passenger.getLocation().equals(getNextWaypoint())) {
+            route.removeFirst();
+        }
         return true;
     }
 
@@ -132,7 +138,7 @@ public class Vehicle implements IVehicle {
     @Override
     public void clear() {
         passengers.clear();
-        route.clear();
+        clearRoute();
     }
 
 
@@ -156,6 +162,25 @@ public class Vehicle implements IVehicle {
     @Override
     public List<Point2D> getRoute() {
         return this.route;
+    }
+
+    @Override
+    public int move() {
+        Point2D nextWaypoint = getNextWaypoint();
+        if (location.equals(nextWaypoint)) {
+            return 1;
+        }
+        if (location.getX() != nextWaypoint.getX()) {
+            location.setLocation(location.getX() + (location.getX() < nextWaypoint.getX() ? 1 : -1), location.getY());
+        } else if (location.getY() != nextWaypoint.getY()) {
+            location.setLocation(location.getX(), location.getY() + (location.getY() < nextWaypoint.getY() ? 1 : -1));
+        }
+        return 0;
+    }
+
+    @Override
+    public void clearRoute() {
+        this.route.clear();
     }
 
 
